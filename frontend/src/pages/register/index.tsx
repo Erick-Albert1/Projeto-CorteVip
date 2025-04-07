@@ -5,19 +5,21 @@ import logoImg from '../../../public/images/corte.png'
 import {Flex, Text, Center, Input, Button} from '@chakra-ui/react'
 
 import Link from 'next/link';
-export default function Login(){
+export default function Register(){
 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+    const [name, setName] = useState("")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
 
-  function handleLogin(){
-    console.log(email);
-    console.log(password);
-  }
+    function handleRegister(){
+        console.log(name)
+        console.log(email)
+        console.log(password)
+    }
   return(
     <>
       <Head>
-        <title>CorteVip - Faça login para axessar</title>
+        <title>Crie sua conta no CorteVip</title>
       </Head>
       <Flex   background="barber.900" height="100vh" alignItems="center" justifyContent="center">
         <Flex width={640} direction="column" p={14} rounded={8}>
@@ -31,6 +33,17 @@ export default function Login(){
             </Center>
 
 
+                <Input
+                textColor="button.default"
+                background="barber.400"
+                variant="filled"
+                size="lg"
+                placeholder='Nome da barbearia'
+                type='text'
+                marginBottom={3}
+                value={name}
+                onChange={(e)=> setName(e.target.value)}
+                />
                 <Input
                 textColor="button.default"
                 background="barber.400"
@@ -56,21 +69,21 @@ export default function Login(){
                 />
 
                 <Button
+                onClick={handleRegister}
                 background="button.cta"
                 mb={6}
                 color="gray.900"
                 size="lg"
                 _hover={{bg:"#ffb13e"}}
-                onClick={handleLogin}
                 >
-                    Acessar
+                    Cadastrar
                 </Button>
 
                 <Center mt={2}>
-                    <Link  href="/register">
+                    <Link  href="/login">
                     <Text
                     textColor="button.default"
-                    >Ainda não possui conta? <strong>Cadastre-se</strong></Text>
+                    >Já possui conta? <strong>Faça login</strong></Text>
                     </Link>
                 </Center>
         </Flex>
