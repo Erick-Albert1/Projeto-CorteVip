@@ -1,6 +1,6 @@
 import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 import { destroyCookie, parseCookies } from "nookies";
-import { AuthTokenError } from "@/services/errors/AuthTokenError";
+import { AuthTokenError } from "../services/errors/AuthTokenError";
 
 
 export function canSSRAuth<P>(fn: GetServerSideProps<P>){
@@ -12,7 +12,7 @@ return async (ctx: GetServerSidePropsContext): Promise<GetServerSidePropsResult<
     if(!token){
         return{
             redirect:{
-                destination:'/login',
+                destination: '/login',
                 permanent: false,
             }
         }

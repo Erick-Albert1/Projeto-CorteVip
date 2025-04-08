@@ -1,7 +1,8 @@
-import { createContext, ReactNode, useState } from "react";
-import { destroyCookie, setCookie } from "nookies";
+import { createContext, ReactNode, useState, useEffect } from "react";
+import { destroyCookie, setCookie, parseCookies } from "nookies";
 import Router from "next/router";
 import { api } from "@/services/apiClient";
+
 
 interface AuthContextData{
     user: UserProps;
@@ -48,9 +49,29 @@ export function signOut(){
 
 export function AuthProvider({children}: AuthProviderProps){
 
-    const [user, setuser] = useState<UserProps>()
+    const [user, setUser] = useState<UserProps>()
     const isAuthenticated =  !!user;//boa sacada pra converter o valor pra boleano.
     
+    useEffect(()=>{
+        const {'@corte.token': token} = parseCookies();
+
+        if(token){
+            api.get('/me').then(response=>{
+                const {id, name, endereco, email, subscriptions} = response.data;
+                setUser({
+                    id,
+                    name,
+                    email,
+                    endereco,
+                    subscriptions
+                })
+            })
+            .catch(()=>{
+                signOut()
+            })
+        }
+    },[])
+
     async function signIn({email, password}: SignInProps){
       try{
         const response = await api.post('/session', {
@@ -63,7 +84,7 @@ export function AuthProvider({children}: AuthProviderProps){
             maxAge:60 * 60 * 24 * 30, // expirar em um mês
             path: '/'
         })
-        setuser({
+        setUser({
             id,
             name,
             email,
@@ -98,7 +119,7 @@ export function AuthProvider({children}: AuthProviderProps){
         try{
             destroyCookie(null, '@corte.token', {path: '/'})
             Router.push('/login')
-            setuser(null);
+            setUser(null);
         }catch(err){
  console.log('Erro ao sair', err)
         }
