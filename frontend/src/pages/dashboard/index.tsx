@@ -1,6 +1,16 @@
 import Head from 'next/head'
 import { Flex, Text } from '@chakra-ui/react';
 
+import { canSSRAuth } from '@/utils/canSSRAuth';
+
+export const GetServerSideProps = canSSRAuth(async(ctx)=>{
+    return{
+        props:{
+            
+        }
+    }
+})
+
 export default function Dashboard(){
     return(
         <>
@@ -15,3 +25,4 @@ export default function Dashboard(){
         </>
     )
 }
+
