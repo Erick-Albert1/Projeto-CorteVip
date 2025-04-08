@@ -16,7 +16,7 @@ export default function Register(){
     async function handleRegister(){
         if(name === '' && email === '' && password === ''){
           return;
-        }
+        } 
 
         await signUp({
           name,
