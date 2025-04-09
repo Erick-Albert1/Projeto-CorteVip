@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import Head from 'next/head'
 import {
   Flex,
@@ -27,11 +27,31 @@ interface ProfileProps{
   premium: boolean;
 }
 
-export default function Profile(){
+export default function Profile({user, premium}:ProfileProps){
   const {logoutUser} = useContext(AuthContext);
+
+  const [name, setName] = useState(user && user?.name)
+  const [endereco, setEndereco] = useState(user?.endereco ? user?.endereco : '')
 
   async function handleLogout(){
     await logoutUser();
+  }
+  async function handleUpdateUser(){
+    if(name === ''){
+      return;
+    }
+    try{
+      const apiClient = setupAPIClient();
+      await apiClient.put('/users', {
+        name: name,
+        endereco: endereco,
+      })
+      alert("dados alterados com sucesso")
+    }catch(err){
+      console.log(err);
+    
+    }
+
   }
   return(
     <>  
@@ -51,18 +71,24 @@ export default function Profile(){
               Nome da barbearia:
             </Text>
             <Input
+            textColor="button.default"
               w="100%"
               background="gray.900"
               placeholder="Nome da sua barbearia"
               size="lg"
               type="text"
               mb={3}
+              value={name}
+              onChange={(e)=>setName(e.target.value)}
             />
 
             <Text mb={2} fontSize="xl" fontWeight="bold" color="white">
               Endereço:
             </Text>
             <Input
+            textColor="button.default"
+            value={endereco}
+            onChange={(e)=>setEndereco(e.target.value)}
               w="100%"
               background="gray.900"
               placeholder="Endereço da barbearia"
@@ -86,7 +112,9 @@ export default function Profile(){
               alignItems="center"
               justifyContent="space-between"
             >
-              <Text p={2} fontSize="lg" color="#4dffb4">Plano Grátis</Text>
+              <Text p={2} fontSize="lg" color={premium ? "#FBA931" : "#4dffb4"}>
+                Plano {premium ? "Premium" : "Grátis"}
+                </Text>
 
               <Link href="/planos">
                 <Box 
@@ -109,6 +137,7 @@ export default function Profile(){
               bg="button.cta"
               size="lg"
               _hover={{ bg: '#ffb13e' }}
+              onClick={handleUpdateUser}
             >
               Salvar
             </Button>
