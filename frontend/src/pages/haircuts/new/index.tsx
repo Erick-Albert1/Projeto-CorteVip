@@ -7,7 +7,8 @@ import {
   Heading,
   Button,
   useMediaQuery,
-  Input
+  Input,
+  Center
 } from '@chakra-ui/react'
 
 import Link from 'next/link'
@@ -18,8 +19,12 @@ import { canSSRAuth } from '@/utils/canSSRAuth';
 
 import { setupAPIClient } from '@/services/api';
 
+interface NewHaircutProps{
+  subscription: boolean;
+  count: number
+}
 
-export default function NewHaircut(){
+export default function NewHaircut({subscription, count}:NewHaircutProps){
   const [isMobile] = useMediaQuery("(max-width: 500px)");
 
   return(
@@ -78,6 +83,7 @@ export default function NewHaircut(){
               w="85%"
               bg="gray.900"
               mb={3}
+              
             />
 
             <Input
@@ -96,9 +102,23 @@ export default function NewHaircut(){
               mb={6}
               bg="button.cta"
               _hover={{ bg: "#FFb13e" }}
+              disabled={!subscription && count >= 4}
             >
               Cadastrar
             </Button>
+
+            {!subscription && count >= 4 && (
+              <Flex direction="row" align="center" justifyContent="center" color="white" >
+                <Text pr="2">
+                Você atingiu seu limite de cortes.
+                </Text>
+                <Link href="/planos">
+                <Text fontWeight="bold" color="#31fb5a" cursor="pointer">
+                  Seja Premium
+                </Text>
+                </Link>
+              </Flex>
+            )}
 
           </Flex>
 
@@ -107,3 +127,30 @@ export default function NewHaircut(){
     </>
   )
 }
+
+export const getServerSideProps = canSSRAuth( async (ctx) =>{
+try{
+  const apiClient = setupAPIClient(ctx);
+  const response = await apiClient.get('/haircut/check')
+  const count = await apiClient.get('haircut/count')
+
+  return{
+    props:{
+    subscription: response.data?.subscriptions?.status === 'active' ? true : false,
+    count: count.data
+    }
+  }
+
+
+}catch(err){
+  console.log(err);
+  return{
+    redirect:{
+      destination: '/dashboard',
+      permanent: false,
+    }
+  }
+}
+
+
+})
