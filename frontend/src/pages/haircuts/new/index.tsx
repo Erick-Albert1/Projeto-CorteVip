@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Head from 'next/head';
 import { Sidebar } from '../../../components/sidebar'
 
@@ -14,7 +15,7 @@ import {
 import Link from 'next/link'
 
 import { FiChevronLeft } from 'react-icons/fi'
-
+import Router from 'next/router';
 import { canSSRAuth } from '@/utils/canSSRAuth';
 
 import { setupAPIClient } from '@/services/api';
@@ -26,6 +27,27 @@ interface NewHaircutProps{
 
 export default function NewHaircut({subscription, count}:NewHaircutProps){
   const [isMobile] = useMediaQuery("(max-width: 500px)");
+
+  const [name, setName] = useState("")
+  const [price, setPrice]  = useState("")
+
+  async function handleRegister(){
+    if(name === '' || price === ''){
+      return;
+    }
+    try{
+      const apiClient = setupAPIClient();
+      await apiClient.post('/haircut', {
+        name: name,
+        price: Number(price),
+      })
+
+      Router.push('/haircuts')
+
+    }catch(err){
+      console.log(err);
+    }
+  }
 
   return(
     <>
@@ -83,7 +105,9 @@ export default function NewHaircut({subscription, count}:NewHaircutProps){
               w="85%"
               bg="gray.900"
               mb={3}
-              
+              value={name}
+              onChange={(e)=> setName(e.target.value)}
+              color="white"
             />
 
             <Input
@@ -93,9 +117,13 @@ export default function NewHaircut({subscription, count}:NewHaircutProps){
               w="85%"
               bg="gray.900"
               mb={4}
+              value={price}
+              onChange={(e)=> setPrice(e.target.value)}
+              color="white"
             />
 
             <Button
+            onClick={handleRegister}
               w="85%"
               size="lg"
               color="gray.900"
