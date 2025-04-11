@@ -26,7 +26,7 @@ import { IconButton,
  }
 
  const LinkItens: Array<LinkItemProps>= [
-    {name: 'Agenda' , icon: FiScissors, route:'/dasboard'},
+    {name: 'Agenda' , icon: FiScissors, route:'/dashboard'},
     {name: 'Meus Cortes' , icon: FiClipboard, route:'/haircuts'},
     {name: 'Minha conta' , icon: FiSettings, route:'/profile'},
  ]
