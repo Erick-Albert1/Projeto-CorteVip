@@ -39,7 +39,7 @@ export default function Haircuts({haircuts}: HaircutsProps){
 
   async function handleDisable(e: ChangeEvent<HTMLInputElement>){
     const apiClient = setupAPIClient();
-    if(e.target.value === 'disable'){
+    if(e.target.value === 'disabled'){
 
       setDisableHaircut('enabled')
       const response = await apiClient.get('/haircuts', {
@@ -49,7 +49,7 @@ export default function Haircuts({haircuts}: HaircutsProps){
       })
       setHaircutList(response.data);
     }else{
-      setDisableHaircut("disable")
+      setDisableHaircut("disabled")
 
       const response = await apiClient.get('/haircuts', {
         params:{

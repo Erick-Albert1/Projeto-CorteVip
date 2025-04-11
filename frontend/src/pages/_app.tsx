@@ -5,7 +5,19 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { extendTheme } from '@chakra-ui/react'
 
 import { AuthProvider } from '@/context/AuthContex'
+import { color } from 'framer-motion'
 
+const styles = {
+  global:{
+    body:{
+      color: 'gray-100'
+    },
+      a:{
+        color: '#fff'
+      }
+    
+  }
+}
 
 const colors = {
   barber:{
@@ -24,7 +36,7 @@ const colors = {
   }
 }
 
-const theme = extendTheme({ colors })
+const theme = extendTheme({ styles, colors })
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
