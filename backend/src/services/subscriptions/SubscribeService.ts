@@ -59,7 +59,7 @@ class SubscribeService{
             cancel_url: process.env.STRIPE_CANCEL_URL
         })
 
-        return {sessionID: stripeCheckoutSession.id }
+        return {sessionId: stripeCheckoutSession.id }
 
 
     }
