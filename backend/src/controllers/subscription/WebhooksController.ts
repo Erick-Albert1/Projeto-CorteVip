@@ -60,7 +60,7 @@ class WebhooksController{
                 )
             break;
             default:
-                console.log(`Evento desconhecido ${event.type}`)
+                console.log(`Evento não conhecido ${event.type}`)
         }
 
         response.send();
