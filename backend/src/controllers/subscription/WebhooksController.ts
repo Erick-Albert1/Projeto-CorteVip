@@ -4,7 +4,7 @@ import { stripe } from "../../utils/stripe";
 
 import { saveSubscription } from "../../utils/manageSubscription";
 
-
+//webhook é um endpoint que o stripe vai chamar quando algum evento acontecer
 class WebhooksController{
     async handle(request: Request, response:Response){
         let event: Stripe.Event = request.body;
