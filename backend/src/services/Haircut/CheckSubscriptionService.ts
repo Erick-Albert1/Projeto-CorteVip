@@ -2,7 +2,7 @@ import prismaClient from "../../prisma";
 
 interface CheckSubscription{
     user_id : string;
-}
+}//modulo para verificar o status da assinatura do usuario
 class CheckSubscriptionSevice{
     async execute({user_id}: CheckSubscription){
 
