@@ -7,7 +7,7 @@ interface AuthUserRequest{
     email: string;
     password: string;
 }
-
+//componente para autenticar o usuario
 class AuthUserService{
     async execute({email, password}:AuthUserRequest){
         
